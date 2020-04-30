@@ -1,0 +1,51 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.9.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+}
+
+task fatJar(type: Jar) {
+	//manifest {
+    //    attributes 'Implementation-Title': 'Task Notifier',  
+    //    	'Implementation-Version': version,
+    //    	'Main-Class': 'com.mkyong.DateUtils'
+    //}
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+
+jar {
+	enabled = true
+    baseName = 'custom-authentication'
+    version =  '1.0.0'
+    
+}
+bootJar {
+	enabled = false
+}
+
+group = 'org.bonitasoft'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    
+    compile fileTree(dir: 'libs', include: '*.jar')
+	
+	compileOnly "org.bonitasoft.engine:bonita-server:7.9.4"
+	compileOnly "org.bonitasoft.engine:bonita-engine-standalone:7.9.4"
+	compileOnly "org.bonitasoft.engine:bonita-common:7.9.4"
+	compileOnly "javax.servlet:servlet-api:2.5"
+	
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "com.icegreen:greenmail:1.5.11"
+	testImplementation "org.bonitasoft.engine:bonita-server:7.9.4"
+	testImplementation "org.bonitasoft.engine:bonita-engine-standalone:7.9.4"
+	testImplementation "org.bonitasoft.engine:bonita-common:7.9.4"
+}
